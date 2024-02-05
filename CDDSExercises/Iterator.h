@@ -1,13 +1,12 @@
 #pragma once
-#include <iostream>
 #include "Node.h"
 
 template<typename AnyType>
 class Iterator
 {
 public:
-	Iterator();
-	Iterator(Node<AnyType>* node);
+	Iterator<AnyType>();
+	Iterator<AnyType>(Node<AnyType>* node);
 
 	Iterator<AnyType> operator ++();
 	Iterator<AnyType> operator --();
@@ -21,7 +20,10 @@ private:
 };
 
 template<typename AnyType>
-inline Iterator<AnyType>::Iterator(){}
+inline Iterator<AnyType>::Iterator()
+{
+	m_current = nullptr;
+}
 
 template<typename AnyType>
 inline Iterator<AnyType>::Iterator(Node<AnyType>* node)
@@ -32,37 +34,45 @@ inline Iterator<AnyType>::Iterator(Node<AnyType>* node)
 template<typename AnyType>
 inline Iterator<AnyType> Iterator<AnyType>::operator++()
 {
-	return Iterator<AnyType>(m_current->next);
+	if (m_current)
+	{
+		Iterator<AnyType> iter = Iterator<AnyType>(m_current->next);
+		m_current = m_current->next;
+		return iter;
+	}
+
+	Iterator<AnyType> iter = Iterator<AnyType>(nullptr);
+	return iter;
 }
 
 template<typename AnyType>
 inline Iterator<AnyType> Iterator<AnyType>::operator--()
 {
-	return Iterator<AnyType>(m_current->previous);
+	if (m_current)
+	{
+		Iterator<AnyType> iter = Iterator<AnyType>(m_current->previous);
+		m_current = m_current->previous;
+		return iter;
+	}
+
+	Iterator<AnyType> iter = Iterator<AnyType>(nullptr);
+	return iter;
 }
 
 template<typename AnyType>
 inline const bool Iterator<AnyType>::operator==(const Iterator<AnyType>& iter)
 {
-	if (iter == m_current)
-	{
-		return true;
-	}
-	return false;
+	return m_current == iter.m_current;
 }
 
 template<typename AnyType>
 inline const bool Iterator<AnyType>::operator!=(const Iterator<AnyType>& iter)
 {
-	if (iter != m_current)
-	{
-		return true;
-	}
-	return false;
+	return m_current != iter.m_current;
 }
 
 template<typename AnyType>
 inline AnyType Iterator<AnyType>::operator*()
 {
-	return AnyType();
+	return m_current->data;
 }

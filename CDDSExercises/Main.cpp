@@ -1,5 +1,5 @@
 #include <iostream>
-#include "DynamicArray.h"
+#include "LinkedList.h"
 
 template<typename AnyType>
 AnyType add(AnyType a, AnyType b)
@@ -9,15 +9,17 @@ AnyType add(AnyType a, AnyType b)
 
 int main()
 {
-	DynamicArray<int> nums = DynamicArray<int>();
+	LinkedList<int> testList = LinkedList<int>();
 
-	nums.addItem(1);
-	nums.addItem(2);
-	nums.addItem(3);
-	nums.addItem(4);
-	nums.addItem(5);
+	testList.pushFront(1);
+	testList.pushFront(2);
+	testList.pushFront(3);
+	testList.pushFront(4);
+	testList.pushFront(5);
 
-	nums.print();
+	testList.destroy();
+
+	testList.print();
 
 	std::cout << add(2.5f, 2.5f);
 }
